@@ -3,7 +3,7 @@
 
 ### Run Project
 ```
-php artisan server
+php artisan serve
 ```
 
 ## End points
