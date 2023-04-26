@@ -10,17 +10,19 @@ class PostsController extends Controller
 {
     public function store(Request $request) {
 
+        // Check whether the input is valid or not
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string|max:255',
         ]);
 
+        // Insert the new comment into the database
         $post = Posts::create($data);
 
         $data = [
             'post_id' => $post->id,
-            'title' => $request->get('title'),
-            'content' => $request->get('content')
+            'title' => $post->title,
+            'content' => $post->content
         ];
 
         return response()->json([
@@ -30,6 +32,7 @@ class PostsController extends Controller
     }
 
     public function retrieveAll(Request $request) {
+        // select all posts
         $posts = Posts::select('id', 'title', 'content', 'created_at')->get();
 
         return response()->json([
@@ -39,6 +42,7 @@ class PostsController extends Controller
     }
 
     public function retrieveOne(Request $request, $post_id) {
+        // Check whether the post having the id = $post_id exists or not
         $post = Posts::select('id', 'title', 'content', 'created_at')->where('id', $post_id);
 
         if (is_null($post)) {
